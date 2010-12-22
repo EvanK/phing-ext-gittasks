@@ -3,6 +3,11 @@
 require_once 'phing/Task.php';
 require_once 'phing/tasks/ext/git/GitBaseTask.php';
 
+/**
+ * Wrapper around git-log
+ *
+ * @see VersionControl_Git
+ */
 class GitLogTask extends GitBaseTask
 {
     /**

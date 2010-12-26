@@ -11,19 +11,37 @@
     <!-- demonstrate task for git-log command -->
     <target name="gitlog">
         <echo msg="Equivalent to `git log --name-status --format=oneline HEAD^..HEAD`" />
-        <gitlog repository="${repo.dir.resolved}" nameStatus="true" format="oneline" since="HEAD^" until="HEAD" />
+        <gitlog repository="${repo.dir.resolved}"
+                nameStatus="true"
+                format="oneline"
+                since="HEAD^"
+                until="HEAD"
+                outputProperty="gitLogOutput" />
+        <echo msg="Everything that's happened since HEAD^: ${gitLogOutput}" />
     </target>
 
     <!-- demonstrate task for git-tag command -->
     <target name="gittag">
         <echo msg="Equivalent to `git tag -a -m 'foo bar baz' MyUnsignedTag`" />
-        <gittag repository="${repo.dir.resolved}" annotate="true" message="foo bar baz" name="MyUnsignedTag" />
+        <gittag repository="${repo.dir.resolved}"
+                annotate="true"
+                message="foo bar baz"
+                name="MyUnsignedTag" />
         <echo msg="Equivalent to `git tag -a -f -m 'fizz buzz' MyUnsignedTag`" />
-        <gittag repository="${repo.dir.resolved}" annotate="true" replace="true" message="fizz buzz" name="MyUnsignedTag" />
+        <gittag repository="${repo.dir.resolved}"
+                annotate="true"
+                replace="true"
+                message="fizz buzz"
+                name="MyUnsignedTag" />
         <echo msg="Equivalent to `git tag -l`" />
-        <gittag repository="${repo.dir.resolved}" list="true" />
+        <gittag repository="${repo.dir.resolved}"
+                list="true"
+                outputProperty="gitTagOutput" />
+        <echo msg="All current tags: ${gitTagOutput}" />
         <echo msg="Equivalent to `git tag -d MyUnsignedTag`" />
-        <gittag repository="${repo.dir.resolved}" delete="true" name="MyUnsignedTag" />
+        <gittag repository="${repo.dir.resolved}"
+                delete="true"
+                name="MyUnsignedTag" />
     </target>
 
     <!-- do them all by default -->

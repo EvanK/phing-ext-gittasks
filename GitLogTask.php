@@ -66,6 +66,12 @@ class GitLogTask extends GitBaseTask
     private $paths;
     
     /**
+     * Property name to set with output value from git-log
+     * @var string
+     */
+    private $outputProperty;
+    
+    /**
      * The main entry point for the task
      */
     public function main()
@@ -106,6 +112,10 @@ class GitLogTask extends GitBaseTask
             $output = $command->execute();
         } catch (Exception $e) {
             throw new BuildException('Task execution failed');
+        }
+
+        if (null !== $this->outputProperty) {
+            $this->project->setProperty($this->outputProperty, $output);
         }
 
         $this->log(
@@ -212,5 +222,10 @@ class GitLogTask extends GitBaseTask
     public function getPaths()
     {
         return $this->paths;
+    }
+    
+    public function setOutputProperty($prop)
+    {
+        $this->outputProperty = $prop;
     }
 }

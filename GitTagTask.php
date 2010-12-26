@@ -95,6 +95,12 @@ class GitTagTask extends GitBaseTask
     private $pattern;
     
     /**
+     * Property name to set with output value from git-tag
+     * @var string
+     */
+    private $outputProperty;
+    
+    /**
      * The main entry point for the task
      */
     public function main()
@@ -159,6 +165,10 @@ class GitTagTask extends GitBaseTask
             $output = $command->execute();
         } catch (Exception $e) {
             throw new BuildException('Task execution failed');
+        }
+
+        if (null !== $this->outputProperty) {
+            $this->project->setProperty($this->outputProperty, $output);
         }
 
         $this->log(
@@ -335,5 +345,10 @@ class GitTagTask extends GitBaseTask
     public function getPattern()
     {
         return $this->pattern;
+    }
+    
+    public function setOutputProperty($prop)
+    {
+        $this->outputProperty = $prop;
     }
 }

@@ -29,6 +29,12 @@ class GitLogTask extends GitBaseTask
     private $maxCount;
     
     /**
+     * Don't show commits with more than one parent. See --no-merges of git-log
+     * @var boolean
+     */
+    private $noMerges = false;
+    
+    /**
      * Commit format. See --format of git-log
      * @var string
      */
@@ -73,6 +79,7 @@ class GitLogTask extends GitBaseTask
         $command
             ->setOption('stat', $this->getStat())
             ->setOption('name-status', $this->isNameStatus())
+            ->setOption('no-merges', $this->isNoMerges())
             ->setOption('format', $this->getFormat());
         
         if (null !== $this->getMaxCount()) {
@@ -140,6 +147,21 @@ class GitLogTask extends GitBaseTask
     public function getMaxCount()
     {
         return $this->maxCount;
+    }
+    
+    public function setNoMerges($flag)
+    {
+        $this->noMerges = (bool)$flag;
+    }
+    
+    public function getNoMerges()
+    {
+        return $this->noMerges;
+    }
+    
+    public function isNoMerges()
+    {
+        return $this->getNoMerges();
     }
     
     public function setFormat($format)

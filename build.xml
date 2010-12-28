@@ -62,5 +62,5 @@
     </target>
 
     <!-- do them all by default -->
-    <target name="build" depends="gitlog,gittag" />
+    <target name="build" depends="gitdescribe,gitlog,gittag" />
 </project>

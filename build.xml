@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phing-ext-gittasks" default="build">
     <!-- add custom tasks from current directory  -->
-    <taskdef name="gitlog" classname="GitLogTask" />
-    <taskdef name="gittag" classname="GitTagTask" />
+    <taskdef name="gitdescribe" classname="GitDescribeTask" />
+    <taskdef name="gitlog"      classname="GitLogTask" />
+    <taskdef name="gittag"      classname="GitTagTask" />
 
     <!-- assume our current directory IS the git repo to operate on -->
     <property name="repo.dir" value="." />
     <resolvepath propertyName="repo.dir.resolved" file="${repo.dir}" />
+
+    <!-- demonstrate task for git-describe command -->
+    <target name="gitdescribe">
+        <echo msg="Equivalent to `git describe --all --long --always`" />
+        <gitdescribe repository="${repo.dir.resolved}"
+                     all="true"
+                     long="true"
+                     always="true" />
+        <echo msg="Equivalent to `git describe --tags --abbrev=0 --match *-complete`" />
+        <gitdescribe repository="${repo.dir.resolved}"
+                     tags="true"
+                     abbrev="0"
+                     match="*-complete"
+                     outputProperty="gitDescribeOutput" />
+        <echo msg="Latest tag matching *-complete: ${gitDescribeOutput}" />
+    </target>
 
     <!-- demonstrate task for git-log command -->
     <target name="gitlog">

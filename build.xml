@@ -2,6 +2,7 @@
 <project name="phing-ext-gittasks" default="build">
     <!-- add custom tasks from current directory  -->
     <taskdef name="gitdescribe" classname="GitDescribeTask" />
+    <taskdef name="gitdiff"     classname="GitDiffTask" />
     <taskdef name="gitlog"      classname="GitLogTask" />
     <taskdef name="gittag"      classname="GitTagTask" />
 
@@ -23,6 +24,30 @@
                      match="*-complete"
                      outputProperty="gitDescribeOutput" />
         <echo msg="Latest tag matching *-complete: ${gitDescribeOutput}" />
+    </target>
+
+    <!-- demonstrate task for git-describe command -->
+    <target name="gitdiff">
+        <echo msg="Equivalent to `git diff --shortstat --ignore-submodules HEAD^..HEAD`" />
+        <gitdiff repository="${repo.dir.resolved}"
+                 shortstat="true"
+                 ignoreSubmodules="true"
+                 commits="HEAD^..HEAD"
+                 outputProperty="gitDiffOutput" />
+        <echo msg="Files affected since HEAD^: ${gitDiffOutput}" />
+        <echo msg="Equivalent to `git diff --cached`" />
+        <gitdiff repository="${repo.dir.resolved}"
+                 cached="true"
+                 outputProperty="gitDiffOutput" />
+        <if>
+            <equals arg1="${gitDiffOutput}" arg2="" />
+            <then>
+                <echo msg="No staged changes!" />
+            </then>
+            <else>
+                <echo msg="Currently staged changes: ${gitDiffOutput}" />
+            </else>
+        </if>
     </target>
 
     <!-- demonstrate task for git-log command -->
@@ -62,5 +87,5 @@
     </target>
 
     <!-- do them all by default -->
-    <target name="build" depends="gitdescribe,gitlog,gittag" />
+    <target name="build" depends="gitdescribe,gitdiff,gitlog,gittag" />
 </project>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phing-ext-gittasks" default="build">
     <!-- add custom tasks from current directory  -->
-    <taskdef name="gitdescribe" classname="GitDescribeTask" />
-    <taskdef name="gitdiff"     classname="GitDiffTask" />
-    <taskdef name="gitlog"      classname="GitLogTask" />
-    <taskdef name="gittag"      classname="GitTagTask" />
+    <taskdef name="gitdescribe"   classname="GitDescribeTask" />
+    <taskdef name="gitdiff"       classname="GitDiffTask" />
+    <taskdef name="gitlog"        classname="GitLogTask" />
+    <taskdef name="gitremoteshow" classname="GitRemoteShowTask" />
+    <taskdef name="gittag"        classname="GitTagTask" />
 
     <!-- assume our current directory IS the git repo to operate on -->
     <property name="repo.dir" value="." />
@@ -62,6 +63,15 @@
         <echo msg="Everything that's happened since HEAD^: ${gitLogOutput}" />
     </target>
 
+    <!-- demonstrate task for git-remote-show command -->
+    <target name="gitremoteshow">
+        <echo msg="Equivalent to `git remote show origin`" />
+        <gitremoteshow repository="${repo.dir.resolved}"
+                       name="origin"
+                       outputProperty="gitRemoteShowOutput" />
+        <echo msg="All the dirt we have on origin: ${gitRemoteShowOutput}" />
+    </target>
+
     <!-- demonstrate task for git-tag command -->
     <target name="gittag">
         <echo msg="Equivalent to `git tag -a -m 'foo bar baz' MyUnsignedTag`" />
@@ -87,5 +97,5 @@
     </target>
 
     <!-- do them all by default -->
-    <target name="build" depends="gitdescribe,gitdiff,gitlog,gittag" />
+    <target name="build" depends="gitdescribe,gitdiff,gitlog,gitremoteshow,gittag" />
 </project>
